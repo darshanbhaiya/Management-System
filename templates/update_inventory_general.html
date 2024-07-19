@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Inventory General</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Raw Material General</h1>
+        <form action="/update_inventory_general/{{ inventory_general.Inventory_General_ID }}" method="POST">
+            <div class="form-group">
+                <label for="rawMaterialName">* Raw Material Name:</label>
+                <input type="text" id="rawMaterialName" name="rawMaterialName" value="{{ inventory_general.RawMaterialName }}" required>
+            </div>
+            <div class="form-group">
+                <label for="availableQuantity">* Available Quantity:</label>
+                <input type="number" id="availableQuantity" name="availableQuantity" value="{{ inventory_general.AvailableQuantity }}" required>
+            </div>
+            <!-- <div class="form-group">
+                <label for="needToBuy">Need to Buy:</label>
+                <input type="checkbox" id="needToBuy" name="needToBuy" {% if inventory_general.Need_to_buy %}checked{% endif %}>
+            </div> -->
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="checkbox"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Order Details</h1>
+        <form action="/updateDeliveryPersonInterfaceUpdate/{{ order.OrderID }}" method="POST">
+
+            <h4>Customer Name: {% for customer in customers %}
+                {% if customer.CustomerID == order.CustomerID %}{{ customer.CustomerName }}  {% endif %}
+           {% endfor %}</h4>
+
+           <br>
+           <h4>Product Name: {% for product in products %}
+            {% if product.ProductID == order.ProductID %} {{ product.Type }} || {{ product.ProductName }} || {{ product.SugarType }} {% endif %}
+       {% endfor %} </h4>
+       <br>
+       <br>
+
+
+            <div class="form-group">
+                <label for="billID">Bill NO.:</label>
+                <input type="number" id="billID" name="billID" value="{{ order.BillID }}" readonly>
+            </div>
+
+            <div class="form-group" style="display: none;">
+                <label for="customerID">Customer Name:</label>
+                <select id="customerID" name="customerID" readonly >
+                    {% for customer in customers %}
+                        <option value="{{ customer.CustomerID }}" {% if customer.CustomerID == order.CustomerID %} selected {% endif %}>{{ customer.CustomerName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            
+            <div class="form-group" style="display: none;">
+                <label for="productID" >Product Name:</label>
+                <select id="productID" name="productID" readonly >
+                    {% for product in products %}
+                        <option value="{{ product.ProductID }}" {% if product.ProductID == order.ProductID %} selected {% endif %}>{{ product.Type }} || {{ product.ProductName }} || {{ product.SugarType }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            
+            
+            <div class="form-group">
+                <label for="batchID">Batch ID:</label>
+                <input type="text" id="batchID" name="batchID" value="{{ order.BatchID }}" >
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" value="{{ order.Quantity }}" readonly >
+            </div>
+            <div class="form-group">
+                <label for="Amount">Amount:</label>
+                <input type="number" id="Amount" name="Amount" value="{{ order.Amount }}"  readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="paymentType">* Payment Type:</label>
+                <select id="paymentType" name="paymentType" required onchange="handlePaymentTypeChange()">
+                    <option value="Online" {% if order.PaymentType == 'Online' %} selected {% endif %}>Online</option>
+                    <option value="Cash" {% if order.PaymentType == 'Cash' %} selected {% endif %}>Cash</option>
+                    <option value="Credit" {% if order.PaymentType == 'Credit' %} selected {% endif %}>Credit</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="paymentReceivedGroup">
+                <label for="paymentReceivedOrNot">* Payment Received:</label>
+                <input type="checkbox" id="paymentReceivedOrNot" name="paymentReceivedOrNot" {% if order.PaymentReceivedOrNot %}checked{% endif %}>
+            </div>
+            
+            <script>
+                function handlePaymentTypeChange() {
+                    var paymentType = document.getElementById("paymentType").value;
+                    var paymentReceivedGroup = document.getElementById("paymentReceivedGroup");
+                    
+                    if (paymentType === "Credit") {
+                        paymentReceivedGroup.style.display = "none";
+                        document.getElementById("paymentReceivedOrNot").checked = false;
+                    } else {
+                        paymentReceivedGroup.style.display = "block";
+                    }
+                }
+                
+                // Ensure correct initial state on page load
+                handlePaymentTypeChange();
+            </script>
+             
+            <div class="form-group">
+                <label for="cratesGiven">Crates Given:</label>
+                <input type="number" id="cratesGiven" name="cratesGiven" value="{{ order.CratesGiven }}" >
+            </div>
+
+            <div class="form-group">
+                <label for="preferredOrderDate">Order Should be delivered before:</label>
+                <input type="date" id="preferredOrderDate" name="preferredOrderDate" value="{{ order.PreferredOrderDate }}" readonly >
+            </div>
+            <div class="form-group">
+                <label for="actualOrderDeliveredDate">* Delivery Date:</label>
+                <input type="date" id="actualOrderDeliveredDate" name="actualOrderDeliveredDate" required>
+            </div>
+
+            <div class="form-group" style="display: none;">
+                <label for="deliveryPersonID">Delivery Person Name:</label>
+                <select id="deliveryPersonID" name="deliveryPersonID" readonly>
+                    <option value="">None</option>
+                    {% for person in delivery_people %}
+                        <option value="{{ person.DeliveryPersonID }}" {% if person.DeliveryPersonID == order.DeliveryPersonID %} selected {% endif %}>{{ person.DeliveryPersonName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="deliveredOrNot">* Delivered:</label>
+                <input type="checkbox" id="deliveredOrNot" name="deliveredOrNot" {% if order.DeliveredOrNot %}checked{% endif %} >
+            </div>
+
+            
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div> 
+
+    <script>
+        // Function to format date as YYYY-MM-DD
+        function formatDate(date) {
+            var year = date.getFullYear();
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var day = ('0' + date.getDate()).slice(-2);
+            return year + '-' + month + '-' + day;
+        }
+
+        // Set default value for actualOrderDeliveredDate input field to today's date
+        document.addEventListener('DOMContentLoaded', function() {
+            var today = new Date();
+            var deliveryDateInput = document.getElementById('actualOrderDeliveredDate');
+            deliveryDateInput.value = formatDate(today);
+        });
+    </script>
+
+</body>
+   
+</html>

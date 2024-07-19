@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Inventory Purchase</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Raw Material Purchase</h1>
+        <form action="/update_inventory_purchase/{{ inventory_purchase.PurchaseID }}" method="POST">
+            <div class="form-group">
+                <label for="inventoryName">* Raw Material Name:</label>
+                <input type="text" id="inventoryName" name="inventoryName" value="{{ inventory_purchase.InventoryName }}" required>
+            </div>
+
+            <!-- <div class="form-group">
+                <label for="vendorName">Vendor Name:</label>
+                <input type="text" id="vendorName" name="vendorName" value="{{ inventory_purchase.VendorName }}" required>
+            </div> -->
+
+            <div class="form-group">
+                <label for="vendorID">* Vendor Name:</label>
+                <select id="vendorID" name="vendorID" required>
+                    {% for vendor in vendors %}
+                        <option value="{{ vendor.VendorID }}" {% if vendor.VendorID == inventory_purchase.VendorID %} selected {% endif %}>{{ vendor.VendorName }}</option>
+                    {% endfor %}
+                </select>
+            </div> 
+
+
+            <div class="form-group">
+                <label for="purchaseDate">* Purchase Date:</label>
+                <input type="date" id="purchaseDate" name="purchaseDate" value="{{ inventory_purchase.PurchaseDate }}" required>
+            </div>
+            <!-- <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="{{ inventory_purchase.Address }}">
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" value="{{inventory_purchase.PhoneNumber}}"  pattern="[0-9]{10}" title="Please enter a valid 10-digit Indian phone number">
+            </div> -->
+            <div class="form-group">
+                <label for="rate">* Rate per unit:</label>
+                <input type="number" id="rate" name="rate" value="{{ inventory_purchase.Rate }}" required>
+            </div>
+            <div class="form-group">
+                <label for="purchasedQuantity">* Purchased Quantity:</label>
+                <input type="number" id="purchasedQuantity" name="purchasedQuantity" value="{{ inventory_purchase.PurchasedQuantity }}" required>
+            </div>
+            <div class="form-group">
+                <label for="remainingQuantity">Remaining Quantity:</label>
+                <input type="number" id="remainingQuantity" name="remainingQuantity" value="{{ inventory_purchase.RemainingQuantity }}" >
+            </div>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

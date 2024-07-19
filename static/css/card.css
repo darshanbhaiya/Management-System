@@ -1,0 +1,43 @@
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.kpi-item {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-right: 1px solid #ccc;
+}
+
+.kpi-item:last-child {
+    border-right: none;
+}
+
+h1 {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.customer-insights-title {
+    color: #007bff; /* Blue color */
+}
+
+.product-insights-title {
+    color: #28a745; /* Green color */
+}
+
+.order-insights-title {
+    color: #dc3545; /* Red color */
+}

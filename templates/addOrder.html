@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Order</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: calc(100% - 16px); /* Adjusted width to accommodate padding */
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensures padding and border are included in width calculation */
+            font-size: 16px;
+            color: #555;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        /* CSS for dynamically added product fields */
+#addProductBtn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Adjust color as needed */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Adjust spacing */
+}
+
+#addProductBtn:hover {
+    background-color: #0056b3; /* Adjust hover color */
+}
+
+.productField {
+    margin-top: 10px; /* Adjust spacing */
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.productField label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: bold;
+}
+
+.productField select,
+.productField input[type="number"] {
+    width: calc(100% - 16px); /* Adjusted width to accommodate padding */
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensures padding and border are included in width calculation */
+    font-size: 16px;
+    color: #555;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Add New Order</h2>
+    <form action="/add_order" method="post">
+
+       
+
+        <label for="billID">* Bill NO.:</label>
+        <input type="number" id="billID" name="billID" value="{{ next_bill_id }}" readonly>
+
+
+        <label for="customerID">* Customer Name:</label>
+        <select name="customerID" required>
+            {% for customer in customers %}
+                <option value="{{ customer.CustomerID }}">{{ customer.CustomerName }}</option>
+            {% endfor %}
+        </select>
+
+        <div id="productFields">
+            <div class="productField">
+                <label for="productID">* Product Name:</label>
+                <select name="productID[]" required>
+                    {% for product in products %}
+                        <option value="{{ product.ProductID }}">{{ product.Type }} || {{ product.ProductName }} || {{ product.SugarType }}</option>
+                    {% endfor %}
+                </select>
+                <label for="quantity">* Quantity:</label>
+                <input type="number" name="quantity[]" required>
+            </div>
+        </div>
+        <button type="button" id="addProductBtn">Add Product</button>
+        <br><br>
+        <!-- Other input fields as before -->
+        
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const addProductBtn = document.getElementById("addProductBtn");
+        const productFields = document.getElementById("productFields");
+
+        addProductBtn.addEventListener("click", function () {
+            const productField = document.createElement("div");
+            productField.className = "productField";
+            productField.innerHTML = `
+                <label for="productID">* Product Name:</label>
+                <select name="productID[]" required>
+                    {% for product in products %}
+                        <option value="{{ product.ProductID }}">{{ product.Type }} || {{ product.ProductName }} || {{ product.SugarType }}</option>
+                    {% endfor %}
+                </select>
+                <label for="quantity">* Quantity:</label>
+                <input type="number" name="quantity[]" required>
+            `;
+            productFields.appendChild(productField);
+        });
+    });
+</script>
+       
+
+        <!-- <label for="quantity">* Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required> -->
+
+   
+
+        <label for="paymentType">* Payment Type:</label>
+        <select id="paymentType" name="paymentType" required onchange="togglePaymentReceived()">
+            <option value="Online">Online</option>
+            <option value="Cash">Cash</option>
+            <option value="Credit">Credit</option>
+        </select>
+
+        <label for="paymentReceivedOrNot" id="paymentReceivedLabel" style="display: none;">! Payment Received:</label>
+        <input type="checkbox" id="paymentReceivedOrNot" name="paymentReceivedOrNot" style="display: none;">
+        <br>
+
+        <script>
+            function togglePaymentReceived() {
+                var paymentType = document.getElementById("paymentType");
+                var paymentReceivedCheckbox = document.getElementById("paymentReceivedOrNot");
+                var paymentReceivedLabel = document.getElementById("paymentReceivedLabel");
+
+                if (paymentType.value === "Credit") {
+                    paymentReceivedCheckbox.checked = false;
+                    paymentReceivedCheckbox.style.display = "none";
+                    paymentReceivedLabel.style.display = "none";
+                } else {
+                    paymentReceivedCheckbox.style.display = "block";
+                    paymentReceivedLabel.style.display = "block";
+                }
+            }
+        </script>
+
+
+
+        <label for="preferredOrderDate">* Order Should be delivered before:</label>
+        <input type="date" id="preferredOrderDate" name="preferredOrderDate" required>
+
+       
+        
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Production</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="checkbox"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+            background-color: #f9f9f9;
+            padding-left: 12px;
+            padding-right: 12px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            ::-webkit-input-placeholder {
+                color: #999;
+            }
+            :-ms-input-placeholder {
+                color: #999;
+            }
+            ::placeholder {
+                color: #999;
+            }
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Production</h1>
+        <form action="/add_production" method="POST">
+            <div class="form-group">
+                <label for="productID">* Product Name:</label>
+                <select name="productID" required>
+                    {% for product in products %}
+                        <option value="{{ product.ProductID }}">{{ product.Type }} || {{ product.ProductName }} || {{ product.SugarType }}</option>
+                    {% endfor %}
+                </select>
+                
+                <!-- <label for="productID">Product ID:</label>
+                <input type="number" id="productID" name="productID" required> -->
+            </div>
+            <div class="form-group">
+                <label for="manufacturingDate">* Manufacturing Date:</label>
+                <input type="date" id="manufacturingDate" name="manufacturingDate" required>
+            </div>
+            <!-- <div class="form-group">
+                <label for="batchID">Batch ID:</label>
+                <input type="text" id="batchID" name="batchID" required>
+            </div> -->
+            <div class="form-group">
+                <label for="manufacturedQuantity">* Quantity to be manufactured:</label>
+                <input type="number" id="manufacturedQuantity" name="manufacturedQuantity" required>
+            </div>
+            <!-- <div class="form-group">
+                <label for="beansQuantity">Beans Quantity:</label>
+                <input type="number" id="beansQuantity" name="beansQuantity" required>
+            </div> -->
+            <!-- <div class="form-group">
+                <label for="manufacturedTime">Manufactured Time:</label>
+                <input type="time" id="manufacturedTime" name="manufacturedTime" required>
+            </div> -->
+            <!-- <div class="form-group">
+                <label for="manufacturedOrNot">Manufactured or Not:</label>
+                <input type="checkbox" id="manufacturedOrNot" name="manufacturedOrNot">
+            </div> -->
+            <div class="form-group">
+                <label for="comments">Comments:</label>
+                <input type="text" id="comments" name="comments">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

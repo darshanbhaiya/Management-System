@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add General Inventory Item</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: calc(100% - 16px); /* Adjusted width to accommodate padding */
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensures padding and border are included in width calculation */
+            font-size: 16px;
+            color: #555;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Add General Raw Material Item</h2>
+    <form action="/add_general_inventory_item" method="POST">
+        <label for="rawMaterialName">* Raw Material Name:</label>
+        <input type="text" id="rawMaterialName" name="rawMaterialName" required>
+
+        <label for="availableQuantity">* Available Quantity:</label>
+        <input type="number" id="availableQuantity" name="availableQuantity" required>
+
+        <!-- <label for="needToBuy">Need to Buy:</label>
+        <input type="checkbox" id="needToBuy" name="needToBuy"> -->
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+
+</div>
+</body>
+</html>

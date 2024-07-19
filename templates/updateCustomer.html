@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Customer</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[name="email"],
+        input[type="number"],
+        input[type="date"],
+        input[type="checkbox"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Customer</h1>
+        <form action="/update_customer/{{ customer.CustomerID }}" method="POST">
+            <div class="form-group">
+                <label for="customerName">* Customer Name:</label>
+                <input type="text" id="customerName" name="customerName" value="{{ customer.CustomerName }}" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="{{ customer.Address }}" >
+            </div>
+            <div class="form-group">
+                <label for="contactPerson">Contact Person:</label>
+                <input type="text" id="contactPerson" name="contactPerson" value="{{ customer.ContactPerson }}" >
+            </div>
+            <div class="form-group">
+                <label for="contactNumber">* Contact Number:</label>
+                <input type="text" id="contactNumber" name="contactNumber" value="{{ customer.ContactNumber }}" pattern="[0-9]{10}" title="Please enter a valid 10-digit Indian phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" value="{{ customer.EmailId }}" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address" >
+            </div>
+            
+            <div class="form-group">
+                <label for="customerType">* Customer Type:</label>
+                <select id="customerType" name="customerType" onchange="toggleGSTFields()" required>
+                    <option value="Individual" {% if customer.CustomerType == 'Individual' %}selected{% endif %}>Individual</option>
+                    <option value="Shop" {% if customer.CustomerType == 'Shop' %}selected{% endif %}>Shop</option>
+                </select>
+            </div>
+            
+            <div id="gstRegistrationSection" style="display: none;">
+                <label for="gstRegistered">* Is shop GST registered:</label>
+                <input type="checkbox" id="gstRegistered" name="gstRegistered" {% if customer.GSTRegistered %}checked{% endif %} onchange="toggleGSTNumberInput()">
+            </div>
+            
+            <div class="form-group" id="gstNumberGroup" style="display:none;">
+                <label for="gstNumber">* GST Number:</label>
+                <input type="text" id="gstNumber" name="gstNumber" placeholder="22ABCDE1234F1Z5" value="{{ customer.GSTNumber }}" onchange="validateGST()">
+            </div>
+            
+            <script>
+                function validateGST() {
+                    var gstNumber = document.getElementById("gstNumber").value;
+                    // Regular expression pattern for Indian GST number
+                    var gstPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9]{1}$/;
+                    if (!(gstPattern.test(gstNumber))) {
+                        alert("Invalid GST number. Please enter a valid GST number.");
+                    }
+                }
+            
+                function toggleGSTFields() {
+                    var customerType = document.getElementById("customerType").value;
+                    var gstRegistrationSection = document.getElementById("gstRegistrationSection");
+                    var gstNumberGroup = document.getElementById("gstNumberGroup");
+                    var gstRegisteredCheckbox = document.getElementById("gstRegistered");
+            
+                    if (customerType === "Shop") {
+                        gstRegistrationSection.style.display = "block";
+                        toggleGSTNumberInput(); // Ensure GST number input is toggled based on GST registration checkbox
+                    } else {
+                        gstRegistrationSection.style.display = "none";
+                        gstNumberGroup.style.display = "none"; // Hide GST number input if customer type is not shop
+                        gstNumberGroup.querySelector('input').removeAttribute('required'); // Remove required attribute
+                        gstRegisteredCheckbox.checked = false; // Uncheck the checkbox if customer type is not shop
+                        document.getElementById("gstNumber").value = '';
+                    }
+                }
+            
+                
+                function toggleGSTNumberInput() {
+                    var gstRegisteredCheckbox = document.getElementById("gstRegistered");
+                    var gstNumberGroup = document.getElementById("gstNumberGroup");
+                    var gstNumberInput = gstNumberGroup.querySelector('input'); // Get the input element inside gstNumberGroup
+
+                    if (gstRegisteredCheckbox.checked) {
+                        gstNumberGroup.style.display = "block";
+                        gstNumberInput.setAttribute('required', ''); // Set required attribute
+                    } else {
+                        gstNumberInput.value = ''; // Clear the GST number input field
+                        gstNumberGroup.style.display = "none";
+                        gstNumberInput.removeAttribute('required'); // Remove required attribute
+                    }
+                }
+
+
+            
+                // Initial toggle when page loads
+                toggleGSTFields();
+            </script>
+            
+            
+
+
+            <div class="form-group">
+                <label for="engagementSource">* Engagement Source:</label>
+                <select id="engagementSource" name="engagementSource" required>
+                    <option value="Direct" {% if customer.EngagementSource == 'Direct' %}selected{% endif %}>Direct</option>
+                    <option value="Marketing" {% if customer.EngagementSource == 'Marketing' %}selected{% endif %}>Marketing</option>
+                    <option value="Digital Media" {% if customer.EngagementSource == 'Digital Media' %}selected{% endif %}>Digital Media</option>
+                </select>
+            </div>
+
+
+            <!-- <div class="form-group">
+                <label for="firstOrderDate">First Order Date:</label>
+                <input type="date" id="firstOrderDate" name="firstOrderDate" value="{{ customer.FirstOrderDate }}" required>
+            </div>
+            <div class="form-group">
+                <label for="lastOrderDate">Last Order Date:</label>
+                <input type="date" id="lastOrderDate" name="lastOrderDate" value="{{ customer.LastOrderDate }}">
+            </div>
+            <div class="form-group">
+                <label for="lastBillNumber">Last Bill Number:</label>
+                <input type="text" id="lastBillNumber" name="lastBillNumber" value="{{ customer.LastBillNumber }}">
+            </div>
+            <div class="form-group">
+                <label for="lastOrderID">Last Order ID:</label>
+                <input type="number" id="lastOrderID" name="lastOrderID" value="{{ customer.LastOrderID }}">
+            </div>
+            <div class="form-group">
+                <label for="totalCredit">Total Credit:</label>
+                <input type="number" id="totalCredit" name="totalCredit" value="{{ customer.TotalCredit }}">
+            </div>
+            <div class="form-group">
+                <label for="totalBusinessAmount">Total Business Amount:</label>
+                <input type="number" id="totalBusinessAmount" name="totalBusinessAmount" value="{{ customer.TotalBusinessAmount }}">
+            </div>
+            <div class="form-group">
+                <label for="totalTofuOrdered">Total Tofu Ordered:</label>
+                <input type="number" id="totalTofuOrdered" name="totalTofuOrdered" value="{{ customer.TotalTofuOrdered }}">
+            </div>
+            <div class="form-group">
+                <label for="totalTofuAmount">Total Tofu Amount:</label>
+                <input type="number" id="totalTofuAmount" name="totalTofuAmount" value="{{ customer.TotalTofuAmount }}">
+            </div>
+            <div class="form-group">
+                <label for="totalMilkOrdered">Total Milk Ordered:</label>
+                <input type="number" id="totalMilkOrdered" name="totalMilkOrdered" value="{{ customer.TotalMilkOrdered }}">
+            </div>
+            <div class="form-group">
+                <label for="totalMilkAmount">Total Milk Amount:</label>
+                <input type="number" id="totalMilkAmount" name="totalMilkAmount" value="{{ customer.TotalMilkAmount }}">
+            </div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" name="status" required>
+                    <option value="Active" {% if customer.Status == 'Active' %}selected{% endif %}>Active</option>
+                    <option value="Obsolete" {% if customer.Status == 'Obsolete' %}selected{% endif %}>Obsolete</option>
+                </select>
+            </div> -->
+            <div class="form-group">
+                <label for="crateGiven">Crate Given:</label>
+                <input type="number" id="crateGiven" name="crateGiven" value="{{ customer.CrateGiven }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="crateReceived">Crates Taken:</label>
+                <input type="number" id="crateReceived" name="crateReceived" value="0">
+            </div>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

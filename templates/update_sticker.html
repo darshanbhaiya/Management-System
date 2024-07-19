@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Sticker Inventory</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Sticker Inventory</h1>
+        <form action="/update_sticker/{{ sticker.StickerID }}" method="POST">
+            <div class="form-group">
+                <label for="stickerType">* Sticker Type:</label>
+                <select id="stickerType" name="stickerType" required onchange="toggleSugarType()">
+                    <option value="Milk" {% if sticker.Type == 'Milk' %}selected{% endif %}>Milk</option>
+                    <option value="Tofu" {% if sticker.Type == 'Tofu' %}selected{% endif %}>Tofu</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="flavourName">* Flavour Name:</label>
+                <input type="text" id="flavourName" name="flavourName" value="{{ sticker.Flavour_name }}" required>
+            </div>
+            <div class="form-group" id="sugarTypeContainer" style="display: none;">
+                <label for="sugarType">* Sugar Type:</label>
+                <select id="sugarType" name="sugarType" required>
+                    <option value="">-- Select Sugar Type --</option>
+                    <option value="SugarFree" {% if sticker.SugarType == 'SugarFree' %}selected{% endif %}>Sugar Free</option>
+                    <option value="LessSugar" {% if sticker.SugarType == 'LessSugar' %}selected{% endif %}>Less Sugar</option>
+                    <option value="NormalSugar" {% if sticker.SugarType == 'NormalSugar' %}selected{% endif %}>Normal Sugar</option>
+                </select>
+            </div>
+            
+            <script>
+                function toggleSugarType() {
+                    var stickerTypeSelect = document.getElementById("stickerType");
+                    var sugarTypeContainer = document.getElementById("sugarTypeContainer");
+            
+                    if (stickerTypeSelect.value === "Milk") {
+                        sugarTypeContainer.style.display = "block";
+                        document.getElementById("sugarType").required = true;
+                    } else {
+                        sugarTypeContainer.style.display = "none";
+                        document.getElementById("sugarType").value = ""; // Clear selection when switching to Tofu
+                        document.getElementById("sugarType").required = false;
+                    }
+                }
+            
+                // Ensure sugar type visibility is properly initialized on page load
+                window.onload = function () {
+                    toggleSugarType();
+                };
+            </script>
+            
+            <div class="form-group">
+                <label for="availableQuantity">* Available Quantity:</label>
+                <input type="number" id="availableQuantity" name="availableQuantity" value="{{ sticker.AvailableQuantity }}" required>
+            </div>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

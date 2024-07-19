@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            line-height: 1.6; /* Improved readability */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: 15px; /* Consistent spacing for headings */
+        }
+
+        h1 {
+            font-size: 32px;
+            color: green; /* Changed to green to match company name */
+            font-weight: bold; /* Added bold font weight */
+        }
+
+        h2 {
+            font-size: 26px;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 10px;
+            color: #555;
+            line-height: 1.4; /* Improved readability */
+        }
+
+        .bill-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th,
+        table td {
+            padding: 10px; /* Increased padding for better spacing */
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        .company-header {
+    text-align: center;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping if needed */
+}
+
+.company-logo {
+    max-width: 150px; /* Adjust the width of the logo as needed */
+    max-height: 150px; /* Adjust the height of the logo as needed */
+    margin-right: 20px; /* Add some spacing between the logo and the company name */
+}
+
+
+
+        .signature {
+            margin-top: 50px; /* Increased margin for better separation */
+            text-align: right;
+        }
+
+        button {
+            padding: 8px 16px; /* Adjusted padding for smaller buttons */
+            cursor: pointer;
+            background-color: #45a049; /* Changed button color to blue */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px; /* Decreased font size for smaller buttons */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        button:hover {
+            background-color: #265929; /* Darker blue on hover */
+        }
+
+        /* Added media query for better responsiveness */
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 15px; /* Adjusted padding for smaller screens */
+            }
+            h1 {
+                font-size: 28px; /* Adjusted font size for smaller screens */
+            }
+            h2 {
+                font-size: 22px; /* Adjusted font size for smaller screens */
+            }
+            button {
+                padding: 6px 12px; /* Adjusted padding for smaller buttons */
+                font-size: 12px; /* Decreased font size for smaller buttons */
+            }
+        }
+
+        /* Added styles for bold font weight */
+        .bill-info p:first-child,
+        .bill-info p:nth-child(2),
+        .bill-info p:nth-child(3) {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="company-header">
+            <img src="{{ url_for('static', filename='images/logoWithoutBackground.png') }}" alt="Company Logo" class="company-logo">
+            <h1 class="company-name">Ava Soy Nutrients</h1>
+        </div>
+        
+        
+        
+        <div class="bill-info">
+            <p><strong>Bill No.:</strong> {{ bill_number }}</p>
+            <p><strong>Date:</strong> {{ bill_date.strftime('%d %b %Y') }}</p>
+        </div>
+        <div class="bill-info">
+            <p><strong>Customer Name:</strong> {{ customer.CustomerName }}</p>
+            <p><strong>Customer ID:</strong> {{ customer.CustomerID }}</p>
+        </div>
+        
+        <p><strong>Phone no.:</strong> {{ customer.ContactNumber }}</p>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>SR No.</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set serial_number = 1 %}
+                {% for order in orders %}
+                {% for product in products %}
+                {% if order.ProductID == product.ProductID  %}
+                <tr>
+                    <td>{{ serial_number }}</td>
+                    <td>{{ product.Type }} || {{ product.ProductName }} {% if product.SugarType %}
+                        || {{ product.SugarType }}
+                    {% endif %}</td>
+                    <td>{{ order.Quantity }}</td>
+                    <td>{{ '%.2f'|format(product.Price) }}</td>
+                    <td>{{ '%.2f'|format(order.Amount) }}</td>
+                </tr>
+                {% set serial_number = serial_number + 1 %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+                <tr>
+                    <td colspan="4" style="text-align: right;"><strong>Total Amount:</strong></td>
+                    <td>{{ '%.2f'|format(total_amount) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: right;"><strong>GST (5%):</strong></td>
+                    <td>{{ '%.2f'|format(gst_amount) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: right; font-weight: bold;">Final Amount (including GST):</td>
+                    <td>{{ '%.2f'|format(final_amount) }}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+
+        <!-- Signature -->
+        <div class="signature">
+            <p><strong>Signature of Order Manager:</strong> __________________________</p>
+        </div>
+
+
+        <br>
+        <br>
+        <br>
+        <!-- Print and Return to Orders Buttons -->
+        <div style="text-align: center;">
+            <button onclick="window.print()">Print</button>
+            <form action="/orders" method="GET" style="display: inline;">
+                <button type="submit">Return to Orders</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title>Customers Section</title>
+
+    <style>
+        /* Styles for the container */
+        .container {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styles for the "Customers" heading */
+        h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        /* Styles for the "No customers found" alert */
+        .alert {
+            background-color: #f44336; /* Red */
+            color: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        /* Styles for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        /* Styles for table header */
+        thead {
+            background-color: #f2f2f2;
+        }
+
+        /* Styles for table rows */
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Styles for the "Add New Customer" button */
+        .add-customer-btn {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-customer-btn:hover {
+            background-color: #45a049; /* Darker green */
+        }
+
+        /* Styles for action buttons */
+        .action-btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 5px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-success {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for message in messages %}
+          {% set message_type = message.split(':')[0] %}
+          <div class="flash-message flash-message-{{ message_type }}">
+            {{ message.split(':')[1] }}
+          </div>
+        {% endfor %}
+      </div>
+      <script>
+        // Automatically hide flash messages after 5 seconds
+        window.onload = function() {
+          var flashMessages = document.querySelectorAll('.flash-messages .flash-message');
+          flashMessages.forEach(function(message) {
+            setTimeout(function() {
+              message.style.display = 'none';
+            }, 3000);
+          });
+        };
+      </script>
+    {% endif %}
+  {% endwith %} -->
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for message in messages %}
+          {% set message_type = message.split(':')[0] %}
+          <div class="flash-message flash-message-{{ message_type }}">
+            {{ message.split(':')[1] }}
+          </div>
+        {% endfor %}
+      </div>
+      <script>
+        // Automatically hide flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+          var flashMessages = document.querySelectorAll('.flash-messages .flash-message');
+          flashMessages.forEach(function(message) {
+            setTimeout(function() {
+              message.style.display = 'none';
+            }, 3000);
+          });
+        });
+      </script>
+    {% endif %}
+{% endwith %}
+
+
+    <div class="navbar">
+        <div class="navbar-left">AVA SOY Nutrients</div>
+        <div class="navbar-center">
+            <a href="/orders"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
+            <a href="/inventory"><i class="fa-solid fa-cubes"></i> Raw Material</a>
+            <a href="/production"><i class="fa-solid fa-gears fa-lg"></i> Production</a>
+            <a href="/product"><i class="fa-solid fa-boxes-stacked"></i> Product</a>
+            <a href="/variousinsights"><i class="fa-solid fa-chart-line"></i> Various Insights</a>
+            <a href="/customers"><i class="fa-solid fa-users"></i> Customers</a>
+            <a href="/delivery_person"><i class="fa-solid fa-people-carry-box"></i> Delivery Person</a>
+            <a href="/employee"><i class="fa-solid fa-users-gear"></i> Employee</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
+            <h2><i class="fa-solid fa-users"></i>    Customers</h2>
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+
+                <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Customers...">
+            </div>
+        </div>
+        <a href="/download_customers_csv" class="add-customer-btn"><i class="fa-solid fa-file-csv fa-lg"></i><b> Download CSV</b></a>
+        <a href="/open_add_customer" class="add-customer-btn"><i class="fa-solid fa-user-plus"></i>  <b>Add New Customer</b></a>
+        {% if customers|length == 0  %}
+            <div class="alert" role="alert">
+                <i class="fa-solid fa-face-sad-tear fa-lg"></i>
+                <b>No customers found. Please add your first customer!</b>            </div>  
+        {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Customer Name</th>
+                    <th>Address</th>
+                    <th>Contact Person</th>
+                    <th>Contact Number</th>
+                    <th>Email Id</th>
+                    <th>Customer Type</th>
+                    <th>GST Number</th>
+                    <th>Engagement Source</th>
+                    <th>First Order Date</th>
+                    <th>Last Order Date</th>
+                    <th>Last Bill Number</th>
+                    <!-- <th>Last Order ID</th> -->
+                    <th>Total Credit</th>
+                    <th>Total Business Amount</th>
+                    <th>Total Tofu Ordered</th>
+                    <th>Total Tofu Amount</th>
+                    <th>Total Milk Ordered</th>
+                    <th>Total Milk Amount</th>
+                    <th>Status</th>
+                    <th>Crate with customer</th>
+                    <!-- <th>Crate Received</th> -->
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.CustomerID }}</td>
+                        <td>{{ customer.CustomerName }}</td>
+                        <td>{{ customer.Address }}</td>
+                        <td>{{ customer.ContactPerson  }}</td>
+                        <td>{{ customer.ContactNumber }}</td>
+                        <td>{{ customer.EmailId if customer.EmailId else ''}}</td>
+                        <td>{{ customer.CustomerType }}</td>
+                        <td>{{ customer.GSTNumber }}</td>
+                        <td>{{ customer.EngagementSource }}</td>
+                        <td>{{ customer.FirstOrderDate.strftime('%d %b %Y') if customer.FirstOrderDate else ''}}</td>
+                        <td>{{ customer.LastOrderDate.strftime('%d %b %Y') if customer.LastOrderDate else ''}}</td>
+                        <td>{{ customer.LastBillNumber }}</td>
+                        <!-- <td>{{ customer.LastOrderID }}</td> -->
+                        <td>{{ customer.TotalCredit }}</td>
+                        <td>{{ customer.TotalBusinessAmount }}</td>
+                        <td>{{ customer.TotalTofuOrdered }}</td>
+                        <td>{{ customer.TotalTofuAmount }}</td>
+                        <td>{{ customer.TotalMilkOrdered }}</td>
+                        <td>{{ customer.TotalMilkAmount }}</td>
+                        <td></td>
+                        <td>{{ customer.CrateGiven }}</td>
+                        <!-- <td>{{ customer.CrateReceived }}</td> -->
+                        <td class="action-cell">
+                            <a href="/open_update_customer/{{ customer.CustomerID }}" class="action-btn btn-success">Update</a>
+                            <!-- <a href="/delete_customer/{{ customer.CustomerID }}" onclick="return confirm('Are you sure you want to delete this customer?');" class="action-btn btn-danger">Delete</a> -->
+                            <a href="#" onclick="confirmDelete('{{ customer.CustomerID }}');" class="action-btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+
+    <script>
+        // Function to handle the delete confirmation
+        function confirmDelete(CustomerID) {
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this customer!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        // If user confirms deletion, redirect to delete URL
+                        window.location.href = "/delete_customer/" + CustomerID;
+                    } else {
+                        swal("Customer is not deleted!");
+                    }
+                });
+        }
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+        // Function to calculate status and update table
+        function calculateAndUpdateStatus() {
+            // Get current date
+            var currentDate = new Date();
+    
+            // Loop through each row in the table
+            var rows = document.querySelectorAll('tbody tr');
+            rows.forEach(function(row) {
+                // Get last order date cell content
+                var lastOrderDateCell = row.querySelector('td:nth-child(11)');
+                var lastOrderDateString = lastOrderDateCell.textContent.trim();
+    
+                // Calculate status based on last order date
+                if (lastOrderDateString !== '') {
+                    var lastOrderDate = new Date(lastOrderDateString);
+                    var timeDifference = (currentDate - lastOrderDate) / (1000 * 60 * 60 * 24); // Difference in days
+    
+                    // Check if difference is less than a year
+                    if (timeDifference < 365) {
+                        // Update status cell
+                        var statusCell = row.querySelector('td:nth-child(19)');
+                        statusCell.textContent = 'Active';
+                    } else {
+                        // Update status cell
+                        var statusCell = row.querySelector('td:nth-child(19)');
+                        statusCell.textContent = 'Obsolete';
+                    }
+                } else {
+                    // Update status cell
+                    var statusCell = row.querySelector('td:nth-child(19)');
+                    statusCell.textContent = 'Obsolete';
+                }
+            });
+        }
+    
+        // Call the function when the page loads
+        window.onload = function() {
+            calculateAndUpdateStatus();
+        };
+    </script>
+    
+        
+    <script src="{{ url_for('static', filename='JS/search.js') }}"></script>
+</body>
+</html>

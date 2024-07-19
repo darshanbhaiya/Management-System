@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Product</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Product</h1>
+        <form action="/update_product/{{ product.ProductID }}" method="POST">
+            <div class="form-group">
+                <label for="productName">* Product Name:</label>
+                <input type="text" id="productName" name="productName" value="{{ product.ProductName }}" required>
+            </div>
+            
+
+
+
+
+            <!-- <div class="form-group">
+                <label for="productType">! Product Type:</label>
+                <select id="productType" name="productType" required >
+                    <option value="Tofu" {% if product.Type == 'Tofu' %} selected {% endif %}>Tofu</option>
+                    <option value="Milk" {% if product.Type == 'Milk' %} selected {% endif %}>Milk</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sugarType">! Sugar Type:</label>
+                <select id="sugarType" name="sugarType" required>
+                    <option value="" {% if product.SugarType == '' %}selected{% endif %}>-- Select Sugar Type --</option>
+                    <option value="SugarFree" {% if product.SugarType == 'SugarFree' %}selected{% endif %}>Sugar Free</option>
+                    <option value="LessSugar" {% if product.SugarType == 'LessSugar' %}selected{% endif %}>Less Sugar</option>
+                    <option value="NormalSugar" {% if product.SugarType == 'NormalSugar' %}selected{% endif %}>Normal Sugar</option>
+                </select>
+            </div> -->
+
+            <div class="form-group">
+                <label for="productType">* Product Type:</label>
+                <select id="productType" name="productType" required onchange="toggleSugarType()">
+                    <option value="Tofu" {% if product.Type == 'Tofu' %} selected {% endif %}>Tofu</option>
+                    <option value="Milk" {% if product.Type == 'Milk' %} selected {% endif %}>Milk</option>
+                </select>
+            </div>
+            <div class="form-group" id="sugarTypeContainer" style="display: none;">
+                <label for="sugarType">* Sugar Type:</label>
+                <select id="sugarType" name="sugarType" required>
+                    <option value="">-- Select Sugar Type --</option>
+                    <option value="SugarFree" {% if product.SugarType == 'SugarFree' %}selected{% endif %}>Sugar Free</option>
+                    <option value="LessSugar" {% if product.SugarType == 'LessSugar' %}selected{% endif %}>Less Sugar</option>
+                    <option value="NormalSugar" {% if product.SugarType == 'NormalSugar' %}selected{% endif %}>Normal Sugar</option>
+                </select>
+            </div>
+            
+            <script>
+                function toggleSugarType() {
+                    var productTypeSelect = document.getElementById("productType");
+                    var sugarTypeContainer = document.getElementById("sugarTypeContainer");
+                    var sugarTypeSelect = document.getElementById("sugarType");
+            
+                    if (productTypeSelect.value === "Milk") {
+                        sugarTypeContainer.style.display = "block";
+                        sugarTypeSelect.required = true;
+                    } else {
+                        sugarTypeContainer.style.display = "none";
+                        sugarTypeSelect.value = ""; // Clear selection when switching to Tofu
+                        sugarTypeSelect.required = false;
+                    }
+                }
+            
+                // Ensure sugar type visibility is properly initialized on page load
+                window.onload = function() {
+                    toggleSugarType();
+                };
+            </script>
+            
+
+
+            <!-- <div class="form-group">
+                <label for="totalQuantityProduced">Total Quantity Produced:</label>
+                <input type="number" id="totalQuantityProduced" name="totalQuantityProduced" value="{{ product.TotalQuantityProduced }}" required>
+            </div> -->
+            <div class="form-group">
+                <label for="productDescription">* Product Description:</label>
+                <textarea id="productDescription" name="productDescription" rows="4" required>{{ product.ProductDescription }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">* Price:</label>
+                <input type="number" id="price" name="price" value="{{ product.Price }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="availableQuantity">Available Quantity:</label>
+                <input type="number" id="availableQuantity" name="availableQuantity" value="{{ product.AvailableQuantity }}" >
+            </div>
+
+            <div class="form-group">
+                <label for="availableOrNot">* Available for sale:</label>
+                <input type="checkbox" id="availableOrNot" name="availableOrNot" {% if product.AvailableOrNot %}checked{% endif %}>
+            </div>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

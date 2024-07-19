@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Production</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="checkbox"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* CSS for manufactured time input */
+input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #555;
+    margin-top: 5px;
+    /* Additional styling */
+    background-color: #f9f9f9;
+    /* Add more padding to improve aesthetics */
+    padding-left: 12px;
+    padding-right: 12px;
+    /* Add box-shadow to give it a slight depth effect */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    /* Style placeholder text */
+    ::-webkit-input-placeholder {
+        color: #999;
+    }
+    :-ms-input-placeholder {
+        color: #999;
+    }
+    ::placeholder {
+        color: #999;
+    }
+}
+/* Adjust hover and focus effects for better user interaction */
+input[type="time"]:hover,
+input[type="time"]:focus {
+    border-color: #66afe9;
+    outline: none;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Production</h1>
+        <form action="/update_production/{{ production.ProductionID }}" method="POST">
+            <div class="form-group">
+                <label for="productID">* Product Name:</label>
+                <select id="productID" name="productID" required>
+                    {% for product in products %}
+                        <option value="{{ product.ProductID }}" {% if product.ProductID == production.ProductID %} selected {% endif %}>{{ product.Type }} || {{ product.ProductName }} || {{ product.SugarType }}</option>
+                    {% endfor %}
+                </select>
+            </div>            
+            <div class="form-group">
+                <label for="manufacturingDate">* Manufacturing Date:</label>
+                <input type="date" id="manufacturingDate" name="manufacturingDate" value="{{ production.ManufacturingDate }}" required>
+            </div>
+            <!-- <div class="form-group">
+                <label for="batchID">Batch ID:</label>
+                <input type="text" id="batchID" name="batchID" value="{{ production.BatchID }}" required>
+            </div> -->
+            <div class="form-group">
+                <label for="manufacturedQuantity">* Quantity to be manufactured:</label>
+                <input type="number" id="manufacturedQuantity" name="manufacturedQuantity" value="{{ production.ManufacturedQuantity }}" required>
+            </div>
+            <div class="form-group">
+                <label for="beansQuantity">Beans Quantity:</label>
+                <input type="number" id="beansQuantity" name="beansQuantity" value="{{ production.BeansQuantity }}" >
+            </div>
+            <!-- <div class="form-group">
+                <label for="manufacturedTime">Manufactured Time:</label>
+                <input type="time" id="manufacturedTime" name="manufacturedTime" value="{{ production.ManufacturedTime }}" >
+            </div> -->
+            <div class="form-group">
+                <label for="manufacturedOrNot">* Manufactured or Not:</label>
+                <input type="checkbox" id="manufacturedOrNot" name="manufacturedOrNot" {% if production.ManufacturedOrNot %}checked{% endif %}>
+            </div>
+            <div class="form-group">
+                <label for="comments">Comments:</label>
+                <input type="text" id="comments" name="comments" value="{{ production.comments }}">
+            </div>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

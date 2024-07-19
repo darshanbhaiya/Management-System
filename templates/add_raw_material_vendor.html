@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Raw Material Vendor</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            width: calc(100% - 16px); /* Adjusted width to accommodate padding */
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensures padding and border are included in width calculation */
+            font-size: 16px;
+            color: #555;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for message in messages %}
+          {% set message_type = message.split(':')[0] %}
+          <div class="flash-message flash-message-{{ message_type }}">
+            {{ message.split(':')[1] }}
+          </div>
+        {% endfor %}
+      </div>
+      <script>
+        // Automatically hide flash messages after 5 seconds
+        window.onload = function() {
+          var flashMessages = document.querySelectorAll('.flash-messages .flash-message');
+          flashMessages.forEach(function(message) {
+            setTimeout(function() {
+              message.style.display = 'none';
+            }, 3000);
+          });
+        };
+      </script>
+    {% endif %}
+  {% endwith %}
+
+<div class="container">
+    <h2>Add New Raw Material Vendor</h2>
+    <form action="/add_raw_material_vendor" method="post">
+        <label for="vendorName">* Vendor Name:</label>
+        <input type="text" id="vendorName" name="vendorName" required>
+
+        <label for="vendorPhoneNumber">* Vendor Phone Number:</label>
+        <input type="tel" id="vendorPhoneNumber" name="vendorPhoneNumber" pattern="[0-9]{10}" required>
+
+        <label for="vendorAddress">* Vendor Address:</label>
+        <input type="text" id="vendorAddress" name="vendorAddress" required>
+
+        
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>

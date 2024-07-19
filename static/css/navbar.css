@@ -1,0 +1,82 @@
+.navbar {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.navbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-center a {
+    color: white;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+.navbar-center a:hover {
+    color: #ccc;
+}
+
+
+/* search bar */
+
+
+/* Styles for the search container */
+.search-container {
+    margin-bottom: 15px;
+}
+
+/* Styles for the search input */
+.search-container input[type=text] {
+    width: 300px; /* Adjust as needed */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f2f2f2;
+}
+
+/* Highlighting searched text */
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+/* Styles for flash messages */
+.flash-messages {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 30%;
+  }
+  
+  .flash-message {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .flash-message-success {
+    background-color: #4CAF50; 
+    color: white;
+  }
+  
+  .flash-message-error {
+    background-color: #f44336; 
+    color: white;
+  }
+  

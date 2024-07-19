@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: calc(100% - 16px); /* Adjusted width to accommodate padding */
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensures padding and border are included in width calculation */
+            font-size: 16px;
+            color: #555;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Add New Product</h2>
+    <form action="/add_product" method="post">
+        <label for="productName">* Product Name:</label>
+        <input type="text" id="productName" name="productName" required>
+
+        
+
+        <!-- <label for="type">! Type:</label>
+        <select id="type" name="productType" required>
+            <option value="Tofu">Tofu</option>
+            <option value="Milk">Milk</option>
+        </select>
+
+        <label for="sugarType">! Sugar Type:</label>
+        <select id="sugarType" name="sugarType" required>
+            <option value="SugarFree">Sugar Free</option>
+            <option value="LessSugar">Less Sugar</option>
+            <option value="NormalSugar">Normal Sugar</option>
+        </select> -->
+
+        <label for="type">* Type:</label>
+        <select id="type" name="productType" required onchange="toggleSugarType()">
+            <option value="Tofu">Tofu</option>
+            <option value="Milk">Milk</option>
+        </select>
+
+        <label id="sugarTypeLabel" for="sugarType" style="display: none;">* Sugar Type:</label>
+        <select id="sugarType" name="sugarType" required style="display: none;">
+            <option value="">-- Select Sugar Type --</option>
+            <option value="SugarFree">Sugar Free</option>
+            <option value="LessSugar">Less Sugar</option>
+            <option value="NormalSugar">Normal Sugar</option>
+        </select>
+
+        <script>
+            function toggleSugarType() {
+                var typeSelect = document.getElementById("type");
+                var sugarTypeLabel = document.getElementById("sugarTypeLabel");
+                var sugarTypeSelect = document.getElementById("sugarType");
+
+                if (typeSelect.value === "Milk") {
+                    sugarTypeLabel.style.display = "block";
+                    sugarTypeSelect.style.display = "block";
+                    sugarTypeSelect.required = true;
+                } else {
+                    sugarTypeLabel.style.display = "none";
+                    sugarTypeSelect.style.display = "none";
+                    sugarTypeSelect.value = ""; // Clear selection when switching to Tofu
+                    sugarTypeSelect.required = false;
+                }
+            }
+
+            // Ensure sugar type visibility is properly initialized on page load
+            window.onload = toggleSugarType;
+        </script>
+
+
+        
+        
+
+
+        
+
+        <!-- <label for="availableQuantity">Available Quantity:</label>
+        <input type="number" id="availableQuantity" name="availableQuantity" required>
+
+        <label for="totalQuantityProduced">Total Quantity Produced:</label>
+        <input type="number" id="totalQuantityProduced" name="totalQuantityProduced" required> -->
+
+        <label for="productDescription">* Product Description:</label>
+        <textarea id="productDescription" name="productDescription" rows="4" required></textarea>
+
+        <label for="price">* Price:</label>
+        <input type="number" id="price" name="price" required>
+
+        <label for="availableOrNot">* Available for sale:</label>
+        <input type="checkbox" id="availableOrNot" name="availableOrNot">
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>

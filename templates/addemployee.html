@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Delivery Person</title>
+    <style>
+        /* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Custom CSS styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+    width: calc(100% - 16px); /* Adjusted width to accommodate padding */
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensures padding and border are included in width calculation */
+    font-size: 16px;
+    color: #555;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    align-content: center;
+}
+
+input[type="password"] {
+    width: calc(100% - 16px); /* Adjusted width to accommodate padding */
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensures padding and border are included in width calculation */
+    font-size: 16px;
+    color: #555;
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Add New Employee</h2>
+    <form action="/add_employee" method="post">
+        <label for="PersonName">* Name:</label>
+        <input type="text" id="PersonName" name="PersonName" required>
+
+        <label for="contactNumber">* Contact Number:</label>
+        <input type="tel" id="contactNumber" name="contactNumber" pattern="[0-9]{10}" title="Please enter a valid 10-digit Indian phone number" required>
+
+        <!-- <label for="totalDeliveries">Total Deliveries:</label>
+        <input type="number" id="totalDeliveries" name="totalDeliveries" required> -->
+
+        <label for="Address">* Address:</label>
+        <textarea id="Address" name="Address" rows="4" required></textarea>
+
+        <label for="email">* Email:</label>
+        <input type="email" id="email" name="email">
+        
+        <label for="userDesignation">* Designation:</label>
+        <select id="userDesignation" name="userDesignation">
+            <option value="Production Manager">Production Manager</option>
+            <option value="Admin">Admin</option>
+            <option value="Order Manager">Order Manager</option>
+        </select>
+
+        <label for="username">* Set Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">* Set Password:</label>
+        <input type="password" id="password" name="password" required>
+            <br></br>
+            
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>

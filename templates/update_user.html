@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update User</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.user-form {
+    display: grid;
+    grid-gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Update Employee</h2>
+        <form action="{{ url_for('update_user', userName=user.UserName) }}" method="post" class="user-form">
+            <div class="form-group">
+                <label for="fullname">Full Name:</label>
+                <input type="text" id="fullname" name="fullname" value="{{ user.User_fullname }}">
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="{{ user.User_Address }}">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.User_email }}">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" name="phone" value="{{ user.User_phone }}">
+            </div>
+            <div class="form-group">
+                <label for="userDesignation">Designation:</label>
+                <select id="userDesignation" name="userDesignation">
+                    <option value="Production Manager" {% if user.User_Designation == 'Production Manager' %} selected {% endif %}>Production Manager</option>
+                    <option value="Admin" {% if user.User_Designation == 'Admin' %} selected {% endif %}>Admin</option>
+                    <option value="Order Manager" {% if user.User_Designation == 'Order Manager' %} selected {% endif %}>Order Manager</option>
+                    <option value="Delivery Person" {% if user.User_Designation == 'Delivery Person' %} selected {% endif %}>Delivery Person</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{user.UserName}}" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" value="{{user.User_password}}" required>
+            </div>
+            <button type="submit" class="btn-update">Update</button>
+        </form>
+    </div>
+</body>
+</html>
