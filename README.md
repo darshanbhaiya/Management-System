@@ -10,6 +10,7 @@ This application is designed to manage various aspects of a business including i
 ![Images](./Images/3.png)
 ![Images](./Images/4.png)
 ![Images](./Images/5.png)
+![Images](./Images/7.png)
 ![Images](./Images/6.png)
 
 The system is built with the following technologies:
