@@ -5,12 +5,12 @@
 
 This application is designed to manage various aspects of a business including inventory, customers, products, production, orders, delivery, and employees. It features an interface tailored for employees, granting them access only to the functions they need. 
 
-![Images](./Images/1)
-![Images](./Images/2)
-![Images](./Images/3)
-![Images](./Images/4)
-![Images](./Images/5)
-![Images](./Images/6)
+![Images](./Images/1.png)
+![Images](./Images/2.png)
+![Images](./Images/3.png)
+![Images](./Images/4.png)
+![Images](./Images/5.png)
+![Images](./Images/6.png)
 
 The system is built with the following technologies:
 - **HTML**
